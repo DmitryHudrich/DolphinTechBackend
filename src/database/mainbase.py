@@ -9,4 +9,4 @@ class MainBase(DeclarativeBase):
     @declared_attr.directive
     @classmethod
     def __tablename__(cls) -> str:
-        return str(cls.__name__.title())
+        return str(cls.__name__)

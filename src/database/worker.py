@@ -7,13 +7,15 @@ from typing import Final, Type
 class DBWorker:
 
     _ENGINE_DB: Final[Type[AsyncEngine]] = create_async_engine(url=Settings.db_url, echo=Settings.echo)
-    _ASYNC_SESSION: Final[Type[AsyncSession]] = async_sessionmaker(self.engine_db)
+    _ASYNC_SESSION: Final[Type[AsyncSession]] = async_sessionmaker(_ENGINE_DB)
 
-    async def create_tables(self) -> None:
-        async with self._ENGINE_DB.begin() as session:
+    @classmethod
+    async def create_tables(cls) -> None:
+        async with cls._ENGINE_DB.begin() as session:
             await session.run_sync(MainBase.metadata.create_all)
     
-    async def get_session(self) -> AsyncSession:
+    @classmethod
+    async def get_session(cls) -> AsyncSession:
         
-        async with self._ASYNC_SESSION() as session:
+        async with cls._ASYNC_SESSION() as session:
             return session
