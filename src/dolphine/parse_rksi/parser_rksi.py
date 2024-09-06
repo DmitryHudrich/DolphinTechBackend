@@ -1,4 +1,4 @@
-from dolphine.parser import Parser
+from src.dolphine.parser import Parser
 from bs4 import BeautifulSoup
 from typing import Union, Dict, List, Final
 import re
@@ -6,7 +6,7 @@ import re
 
 class RksiParser(Parser):
     
-    ELEMENTS_TO_REPLACE: Final[List[str]] = ["<p>", "p>", "<h3>", "h3>", "<b>", "b>", "r", "<b", "/>"]
+    ELEMENTS_TO_REPLACE: Final[List[str]] = ["<p>", "p>", "<h3>", "h3>", "<b>", "b>", "r", "<b", "/>", "<h>"]
 
     def __init__(self) -> str:
         super().__init__(url="https://www.rksi.ru/schedule")
@@ -35,13 +35,16 @@ class RksiParser(Parser):
             for str_obj in data:
                 match str_obj:
                     case _ if "h3" in str_obj and "b" not in str_obj:
-                        str_obj = self.replace_str_object(str_object=str_obj)
-                        group_to_lessons_data = str_obj
+                        str_obj = self.replace_str_object(str_object=str_obj.strip())
+                        group_to_lessons_data = str_obj.strip()
                         lessons_data[group_to_lessons_data.strip()] = {}
-                    case _ if "b" in str_obj and "p" not in str_obj and "br" not in str_obj:
+                    case _ if "b" in str_obj and any([el in str_obj for el in ("понедельник", "вторник", "среда", "четверг", "пятница", "суббота")]):
                         str_obj = self.replace_str_object(str_object=str_obj)
-                        lessons_data[group_to_lessons_data][str_obj.strip()] = []
-                        day = str_obj
+                        if str_obj == "":
+                            pass
+                        else:
+                            day = str_obj.strip()
+                            lessons_data[group_to_lessons_data][day] = []
                     case _ if "p" in str_obj:
                         str_obj = self.replace_str_object(str_object=str_obj)
                         lessons_data[group_to_lessons_data][day].append(str_obj.strip())

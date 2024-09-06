@@ -1,4 +1,5 @@
 from src.dolphine_app import DolphineBackend
+from src.api import api_v1
 from fastapi import FastAPI
 from typing import Type
 from src.database.models.user_model import UserTable
@@ -13,5 +14,8 @@ if __name__ == "__main__":
     @app.on_event("startup")
     async def startup():
         await DBWorker.create_tables()
+
+    #api_v1
+    dolphine_fst.add_router(api_v1)
 
     dolphine_fst.start_project()
