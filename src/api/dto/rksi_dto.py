@@ -9,8 +9,8 @@ class RksiLessons(BaseModel):
 
 class RksiGroups(BaseModel):
 
-    groups: Annotated[Dict[str, List[str]], Field()]
+    groups: Annotated[List[str], Field()]
 
 
 class RksiTeachers(BaseModel):
-    teachers: Annotated[Dict[str, List[str]], Field()]
+    teachers: Annotated[List[str], Field()]

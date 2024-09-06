@@ -31,3 +31,13 @@ async def get_lessons(
 )
 async def get_teachers() -> RksiTeachers:
     return await RksiService.get_teachers_list()
+
+
+@rksi_router.get(
+    path="/get_list_schedule_groups",
+    description="Получение списка учебных групп",
+    response_model=RksiGroups,
+    status_code=status.HTTP_200_OK
+)
+async def get_groups() -> RksiGroups:
+    return await RksiService.get_schedule_groups()

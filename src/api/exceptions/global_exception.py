@@ -17,3 +17,9 @@ class DolphineException(HTTPException):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Не удалось найти список преподавателей в {}".format(self.name_st)
         )
+    
+    async def excp_not_found_groups(self):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Не удалось найти учебные группы в {}".format(self.name_st)
+        )
