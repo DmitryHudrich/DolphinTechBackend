@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "dolphintechbackend"
+version = "0.1.0"
+description = "Бекенд для ботов, моб. приложения для учебных заведений"
+authors = ["darkfos82 <darkfos82@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.113.0"
+requests = "^2.32.3"
+aiosqlite = "^0.20.0"
+bs4 = "^0.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
