@@ -1,4 +1,4 @@
-from dolphine_app import DolphineBackend
+from src.dolphine_app import DolphineBackend
 
 
 if __name__ == "__main__":
