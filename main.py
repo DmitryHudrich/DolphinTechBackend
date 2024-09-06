@@ -1,3 +1,6 @@
-from dolphine.parse_rksi.parser_rksi import RksiParser
+from dolphine_app import DolphineBackend
 
-print(RksiParser().get_lessons(group="ИС-43"))
+
+if __name__ == "__main__":
+    dolphine_fst = DolphineBackend()
+    dolphine_fst.start_project()

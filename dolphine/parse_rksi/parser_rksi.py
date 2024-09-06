@@ -53,7 +53,18 @@ class RksiParser(Parser):
             
             return lessons_data
 
-    def get_teachers(self, *args, **kwargs) -> None: pass
+    def get_teachers(self) -> List[str]:
+        
+        teachers_list: List[str] = str(self.get_selects_data()[-1])
+        self.bs_engine = BeautifulSoup(teachers_list, "html.parser")
+        return [option.get("value") for option in self.bs_engine.find_all("option")]
+    
+    def get_groups(self) -> List[str]:
+
+        groups_list: List[str] = str(self.get_selects_data()[0])
+        self.bs_engine = BeautifulSoup(groups_list, "html.parser")
+        return [option.get("value") for option in self.bs_engine.find_all("option")]
+        
 
     def get_html_data(self, group: str) -> Union[None, str]:
         
@@ -61,3 +72,9 @@ class RksiParser(Parser):
         if req.status_code == 200:
             return req.text
         return None
+    
+    def get_selects_data(self) -> list[str]:
+        
+        select_data: list[str] = self.session.get("https://www.rksi.ru/mobile_schedule").text
+        self.bs_engine = BeautifulSoup(select_data, "html.parser")
+        return self.bs_engine.find_all("select")
