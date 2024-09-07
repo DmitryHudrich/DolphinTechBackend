@@ -7,7 +7,7 @@ from typing import List, Union, Dict
 class UserTable(MainBase):
 
     username: Mapped[str] = mapped_column(type_=String(120), default="anonim", nullable=True, index=False, name="username", unique=False)
-    tg_id: Mapped[int] = mapped_column(type_=BigInteger, nullable=True, index=False, name="tg_id")
+    tg_id: Mapped[int] = mapped_column(type_=BigInteger, nullable=True, index=False, name="tg_id", default=0)
 
     notes: Mapped[List["NoteTable"]] = relationship("NoteTable", back_populates="user", uselist=True)
 

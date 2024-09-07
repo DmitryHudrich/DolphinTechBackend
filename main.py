@@ -2,9 +2,8 @@ from src.dolphine_app import DolphineBackend
 from src.api import api_v1
 from fastapi import FastAPI
 from typing import Type
-from src.database.models.user_model import UserTable
-from src.database.models.note_model import NoteTable
 from src.database.worker import DBWorker
+from src.database.models.user_model import UserTable
 
 
 if __name__ == "__main__":
