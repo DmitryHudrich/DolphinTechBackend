@@ -7,8 +7,8 @@ from src.database.mainbase import MainBase
 class NoteTable(MainBase):
 
     theme: Mapped[str] = mapped_column(type_=String(100), name="theme_note", unique=False, index=True, nullable=False)
-    main_text: Mapped[str] = mapped_column(type_=Text, name="main_txt", unique=False, index=False, nullable=True)
-    id_user: Mapped[int] = mapped_column(ForeignKey("UserTable.id"), type_=Integer, name="id_user")
+    main_text: Mapped[str] = mapped_column(type_=Text, name="main_txt", unique=False, index=False, nullable=True, default=".")
+    id_user: Mapped[int] = mapped_column(ForeignKey("UserTable.id"), type_=Integer, name="id_user", nullable=False)
     
     user: Mapped["UserTable"] = relationship("UserTable", back_populates="notes", uselist=False)
 

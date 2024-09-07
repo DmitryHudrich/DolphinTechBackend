@@ -10,6 +10,10 @@ class DBWorker:
     _ASYNC_SESSION: Final[Type[AsyncSession]] = async_sessionmaker(_ENGINE_DB)
 
     @classmethod
+    @property
+    def engine(cls) -> Type[AsyncEngine]: return cls._ENGINE_DB
+
+    @classmethod
     async def create_tables(cls) -> None:
         async with cls._ENGINE_DB.begin() as session:
             await session.run_sync(MainBase.metadata.create_all)
