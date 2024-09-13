@@ -4,8 +4,8 @@ from fastapi import FastAPI
 from typing import Type
 from src.database.worker import DBWorker
 from src.dolphine.parse_iubip.parser_Iubip import IubipParser
+from src.settings import Settings
 
-print(IubipParser().get_groups())
 
 if __name__ == "__main__":
     dolphine_fst = DolphineBackend()
