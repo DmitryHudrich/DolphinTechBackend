@@ -29,9 +29,6 @@ class IubipParser(Parser):
                 lessons_for_group["Период расписания"] = result.get(name_group)[0]
                 periods_cnt: int = 0
 
-                with open("file.json", "w") as file:
-                    json.dump(obj=result, fp=file, indent=4, ensure_ascii=False)
-
                 for data in result.get(name_group)[1]:
                     for data_period in result.get(name_group)[1].get(data):
                         if "per" in data_period:

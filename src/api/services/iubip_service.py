@@ -18,6 +18,5 @@ class IubipService:
     async def get_all_groups_and_falc() -> IubipGroups:
 
         groups = IubipParser().get_groups()
-        print(groups)
         if groups: return IubipGroups(lessons=groups)
         await IubipException().excp_not_found_groups()
