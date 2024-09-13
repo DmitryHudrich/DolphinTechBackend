@@ -1,6 +1,7 @@
 from src.dolphine.parser import Parser
 from bs4 import BeautifulSoup
 from typing import Union, Dict, List, Final
+from src.settings import Settings
 import re
 
 
@@ -9,7 +10,7 @@ class RksiParser(Parser):
     ELEMENTS_TO_REPLACE: Final[List[str]] = ["<p>", "p>", "<h3>", "h3>", "<b>", "b>", "r", "<b", "/>", "<h>"]
 
     def __init__(self) -> str:
-        super().__init__(url="https://www.rksi.ru/schedule")
+        super().__init__(url=Settings.schedule_rksi)
         self.bs_engine: Union[BeautifulSoup, None] = None
 
     @classmethod
@@ -78,6 +79,6 @@ class RksiParser(Parser):
     
     def get_selects_data(self) -> list[str]:
         
-        select_data: list[str] = self.session.get("https://www.rksi.ru/mobile_schedule").text
+        select_data: list[str] = self.session.get(Settings.mobile_schedule_rksi).text
         self.bs_engine = BeautifulSoup(select_data, "html.parser")
         return self.bs_engine.find_all("select")

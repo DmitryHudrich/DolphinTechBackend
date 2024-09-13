@@ -3,8 +3,9 @@ from src.api import api_v1
 from fastapi import FastAPI
 from typing import Type
 from src.database.worker import DBWorker
-from src.database.models.user_model import UserTable
+from src.dolphine.parse_iubip.parser_Iubip import IubipParser
 
+print(IubipParser().get_groups())
 
 if __name__ == "__main__":
     dolphine_fst = DolphineBackend()
