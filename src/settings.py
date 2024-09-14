@@ -19,6 +19,7 @@ class Settings(metaclass=SettingsMeta):
     __IUBIP_GROUP_URL: Final[str] = getenv("IUBIP_GROUPS_URL")
     __MOBILE_SCHEDULE_RKSI_URL: Final[str] = getenv("MOBILE_SCHEDULE_RKSI_URL")
     __SCHEDULE_RKSI_URL: Final[str] = getenv("SCHEDULE_RKSI_URL")
+    __RGUPS_URL: Final[str] = getenv("RGUPS_URL")
 
     @classmethod
     @property
@@ -41,3 +42,7 @@ class Settings(metaclass=SettingsMeta):
     @classmethod
     @property
     def iubip_group(cls) -> str: return cls.__IUBIP_GROUP_URL
+
+    @classmethod
+    @property
+    def rgups_url(cls) -> str: return cls.__RGUPS_URL
