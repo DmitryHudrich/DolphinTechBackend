@@ -16,7 +16,7 @@ class DolphineBackend:
             title="Дельфин бекенд",
             description="Делаем учебный процесс более удобным"
         )
-        self.admin_panel: Type[AdminPanel] = AdminPanel(
+        self.admin_panel: AdminPanel = AdminPanel(
             app=self.back_app,
             engine=DBWorker.engine
         )

@@ -10,7 +10,7 @@ from src.settings import Settings
 
 if __name__ == "__main__":
     dolphine_fst = DolphineBackend()
-    app: Type[FastAPI] = dolphine_fst.back_app
+    app: FastAPI = dolphine_fst.back_app
 
     @app.on_event("startup")
     async def startup():

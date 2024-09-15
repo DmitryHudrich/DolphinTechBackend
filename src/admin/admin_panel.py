@@ -7,11 +7,11 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 class AdminPanel:
 
-    def __init__(self, app: Type[FastAPI], engine: Type[AsyncEngine]) -> None:
-        self.admin_panel: Type[Admin] = Admin(
+    def __init__(self, app: FastAPI, engine: AsyncEngine) -> None:
+        self.admin_panel: Admin = Admin(
             app=app,
             engine=engine
         )
 
-    def add_model_view(self, mdv: Type[ModelView]) -> None:
+    def add_model_view(self, mdv: ModelView) -> None:
         self.admin_panel.add_view(mdv)

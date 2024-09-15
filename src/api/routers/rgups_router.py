@@ -3,10 +3,10 @@ from src.api.services.rgups_service import RgupsService, RGUPSGroupList, RGUPSLe
 from typing import Type, Final
 
 
-RGUPS_SERVICE: Final[Type[RgupsService]] = RgupsService()
+RGUPS_SERVICE: Final[RgupsService] = RgupsService()
 
 
-rgups_router: Type[APIRouter] = APIRouter(
+rgups_router: APIRouter = APIRouter(
     prefix="/rgups",
     tags=["RGUPS"]
 )

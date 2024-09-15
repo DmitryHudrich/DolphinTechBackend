@@ -6,7 +6,7 @@ from typing import Type
 
 class RgupsService:
 
-    __rgups_parser: Type[RgupsParser] = RgupsParser()
+    __rgups_parser: RgupsParser = RgupsParser()
 
     @classmethod
     async def get_groups(cls) -> RGUPSGroupList:

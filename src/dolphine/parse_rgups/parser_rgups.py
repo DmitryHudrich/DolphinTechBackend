@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup, Tag
 class RgupsParser(Parser):
     def __init__(self) -> None:
         super().__init__(url=Settings.rgups_url)
-        self.session: Type[Session] = Session()
+        self.session: Session = Session()
 
     def get_html_data(self) -> str:
         req = self.session.get(self.url)

@@ -5,7 +5,7 @@ from src.api.dto.rksi_dto import RksiGroups, RksiLessons, RksiTeachers
 from src.api.services.rksi_service import RksiService
 
 
-rksi_router: Type[APIRouter] = APIRouter(
+rksi_router: APIRouter = APIRouter(
     prefix="/rksi",
     tags=["RKSI"]
 )

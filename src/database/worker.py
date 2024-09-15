@@ -6,12 +6,12 @@ from typing import Final, Type
 
 class DBWorker:
 
-    _ENGINE_DB: Final[Type[AsyncEngine]] = create_async_engine(url=Settings.db_url, echo=Settings.echo)
-    _ASYNC_SESSION: Final[Type[AsyncSession]] = async_sessionmaker(_ENGINE_DB)
+    _ENGINE_DB: Final[AsyncEngine] = create_async_engine(url=Settings.db_url, echo=Settings.echo)
+    _ASYNC_SESSION: Final[AsyncSession] = async_sessionmaker(_ENGINE_DB)
 
     @classmethod
     @property
-    def engine(cls) -> Type[AsyncEngine]: return cls._ENGINE_DB
+    def engine(cls) -> AsyncEngine: return cls._ENGINE_DB
 
     @classmethod
     async def create_tables(cls) -> None:
