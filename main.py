@@ -7,18 +7,16 @@ from src.dolphine.parse_rgups.parser_rgups import RgupsParser
 from src.settings import Settings
 
 
-print(RgupsParser().get_all_groups())
 
+if __name__ == "__main__":
+    dolphine_fst = DolphineBackend()
+    app: Type[FastAPI] = dolphine_fst.back_app
 
-# if __name__ == "__main__":
-#     dolphine_fst = DolphineBackend()
-#     app: Type[FastAPI] = dolphine_fst.back_app
-#
-#     @app.on_event("startup")
-#     async def startup():
-#         await DBWorker.create_tables()
-#
-#     #api_v1
-#     dolphine_fst.add_router(api_v1)
-#
-#     dolphine_fst.start_project()
+    @app.on_event("startup")
+    async def startup():
+        await DBWorker.create_tables()
+
+    #api_v1
+    dolphine_fst.add_router(api_v1)
+
+    dolphine_fst.start_project()
