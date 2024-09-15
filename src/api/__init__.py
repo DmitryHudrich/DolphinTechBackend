@@ -5,7 +5,7 @@ from src.api.routers.iubip_router import iubip_router
 from src.api.routers.rgups_router import rgups_router
 
 
-api_v1: Type[APIRouter] = APIRouter(
+api_v1: APIRouter = APIRouter(
     prefix="/api/v1",
     tags=["DolphineAPI"]
 )

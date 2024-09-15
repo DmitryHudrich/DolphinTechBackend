@@ -5,7 +5,6 @@ from typing import List
 
 
 class RksiService:
-
     rksi_parser = RksiParser()
 
     @classmethod
