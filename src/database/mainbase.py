@@ -3,7 +3,6 @@ from sqlalchemy import Integer
 
 
 class MainBase(DeclarativeBase):
-
     id: Mapped[int] = mapped_column(type_=Integer, primary_key=True, autoincrement=True)
 
     @declared_attr.directive

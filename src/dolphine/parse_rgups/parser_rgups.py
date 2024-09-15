@@ -1,8 +1,13 @@
 from src.dolphine.parser import Parser
 from src.settings import Settings
-from typing import List, Dict, Union, Type
+from typing import List, Dict, Union
 from requests import Session
 from bs4 import BeautifulSoup, Tag
+
+
+type GroupsDict = Dict[str, Dict[str, List[str]]]
+type TypeEduDirections = Union[None, Dict[str, Union[str, List[Union[str, int]], int]]]
+type GroupsFaculty = Union[None, Dict[str, Union[str, List[Union[int, str]], int]]]
 
 
 class RgupsParser(Parser):
@@ -15,7 +20,9 @@ class RgupsParser(Parser):
         if req.status_code == 200:
             return req.content
 
-    def get_type_education_directions(self) -> Union[None, Dict[str, Union[str, List[Union[str, int]], int]]]:
+    def get_type_education_directions(
+        self,
+    ) -> TypeEduDirections:
         html_data = self.get_html_data()
         if html_data:
             bs = BeautifulSoup(html_data, "lxml")
@@ -25,23 +32,22 @@ class RgupsParser(Parser):
             cnt_faculty: int = 0
 
             for faculty in schedule_faculity:
-
                 for facl in faculty:
                     if type(facl) is Tag:
                         tag_faculty = facl.get("data-fac-id")
                     facl = str(facl)
                     if facl.isalpha() or facl == "Аспирантура и докторантура":
-                        groups_data[cnt_type_faculty[cnt_faculty]].append({
-                            "name_group": facl,
-                            "group-facl-id": tag_faculty
-                        })
+                        groups_data[cnt_type_faculty[cnt_faculty]].append(
+                            {"name_group": facl, "group-facl-id": tag_faculty}
+                        )
                 cnt_faculty += 1
 
             return groups_data
         return None
 
-    def get_groups_for_faculty(self, type_education: str, name_faculty: str) -> Union[None, Dict[str, Union[str, List[Union[int, str]], int]]]:
-
+    def get_groups_for_faculty(
+        self, type_education: str, name_faculty: str
+    ) -> GroupsFaculty:
         if type_education == "Очное":
             edu_type = "internal"
         elif type_education == "Заочное":
@@ -50,7 +56,9 @@ class RgupsParser(Parser):
         group_facl_id: str = self.get_type_education_directions()
         group_id: Union[int, None] = None
         if group_facl_id:
-            group_facl_id = group_facl_id["ochnoe" if type_education == "Очное" else "zaochnoe"]
+            group_facl_id = group_facl_id[
+                "ochnoe" if type_education == "Очное" else "zaochnoe"
+            ]
             for group in group_facl_id:
                 if group.get("name_group") == name_faculty:
                     group_id = group.get("group-facl-id")
@@ -58,11 +66,7 @@ class RgupsParser(Parser):
         if group_id:
             req = self.session.post(
                 url=self.url,
-                data={
-                    "action": "course",
-                    "fac-id": group_id,
-                    "edu_type": edu_type
-                }
+                data={"action": "course", "fac-id": group_id, "edu_type": edu_type},
             )
 
             if req.status_code == 200:
@@ -73,16 +77,23 @@ class RgupsParser(Parser):
                     courses_data[cs_d.text] = {"course_id": cs_d.get("data-course-id")}
                 return courses_data
 
-    def get_group_id(self, type_education: str, name_facl: str, course: str, name_group: str) -> str:
+    def get_group_id(
+        self, type_education: str, name_facl: str, course: str, name_group: str
+    ) -> str:
         req = self.session.post(
-            url = self.url,
-            data = {
+            url=self.url,
+            data={
                 "action": "groups",
-                "fac-id": [name.get("group-facl-id") for name in self.get_type_education_directions()["ochnoe" if type_education == "Очное" else "zaochnoe"]
-                           if name.get("name_group") == name_facl][0],
+                "fac-id": [
+                    name.get("group-facl-id")
+                    for name in self.get_type_education_directions()[
+                        "ochnoe" if type_education == "Очное" else "zaochnoe"
+                    ]
+                    if name.get("name_group") == name_facl
+                ][0],
                 "course-id": course[0],
-                "edu-type": "internal" if type_education == "Очное" else "distance"
-            }
+                "edu-type": "internal" if type_education == "Очное" else "distance",
+            },
         )
 
         if req.status_code == 200:
@@ -93,25 +104,12 @@ class RgupsParser(Parser):
         return None
 
     ##TOO SLOW
-    def get_all_groups(self) -> Dict[str, Dict[str, List[str]]]:
-
+    def get_all_groups(self) -> GroupsDict:
         type_facl: tuple = ("ochnoe", "zaochnoe")
         facl_data = self.get_type_education_directions()
-        all_groups: Dict[str, Dict[str, List[str]]] = {
-            "internal": {
-                "1": [],
-                "2": [],
-                "3": [],
-                "4": [],
-                "5": []
-            },
-            "distance": {
-                "1": [],
-                "2": [],
-                "3": [],
-                "4": [],
-                "5": []
-            }
+        all_groups: GroupsDict = {
+            "internal": {"1": [], "2": [], "3": [], "4": [], "5": []},
+            "distance": {"1": [], "2": [], "3": [], "4": [], "5": []},
         }
 
         if facl_data:
@@ -124,19 +122,19 @@ class RgupsParser(Parser):
                                 "action": "groups",
                                 "fac-id": fcl.get("group-facl-id"),
                                 "course-id": str(course),
-                                "edu-type": "internal"
-                            }
+                                "edu-type": "internal",
+                            },
                         )
 
                         if html_data_groups.status_code == 200:
                             soap = BeautifulSoup(html_data_groups.content, "lxml")
-                            all_groups["internal" if t_f == "ochnoe" else "distance"][str(course)].extend([
-                                    gr_d.text for gr_d in soap.find_all("a")
-                                ]
-                            )
+                            all_groups["internal" if t_f == "ochnoe" else "distance"][
+                                str(course)
+                            ].extend([gr_d.text for gr_d in soap.find_all("a")])
             return all_groups
 
     def get_lessons(self, name_facl: str, course_name: str, name_group: str) -> Dict:
         pass
 
-    def get_teachers(self, *args): pass
+    def get_teachers(self, *args):
+        pass

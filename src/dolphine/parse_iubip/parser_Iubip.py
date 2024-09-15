@@ -1,12 +1,8 @@
-import json
-from operator import index
-from textwrap import indent
-
 from requests import Session
-from bs4 import BeautifulSoup
 from src.dolphine.parser import Parser
 from src.settings import Settings
 from typing import Union
+
 
 class IubipParser(Parser):
     def __init__(self) -> None:
@@ -15,11 +11,7 @@ class IubipParser(Parser):
 
     def get_lessons(self, name_group: str) -> Union[None, dict]:
         req = self.session.post(
-            url=Settings.iubip_group,
-            data={
-                "do": "schedule",
-                "group": name_group
-            }
+            url=Settings.iubip_group, data={"do": "schedule", "group": name_group}
         )
 
         if req.status_code == 200:
@@ -44,24 +36,39 @@ class IubipParser(Parser):
                                         lessons_for_group[period][day] = []
                                     lessons_for_group[period][day].append(
                                         {
-                                            "GROUP": lesson_day.get("GROUP").strip() if lesson_day.get("GROUP") else None,
-                                            "LES": lesson_day.get("LES").strip() if lesson_day.get("DAY") else None,
-                                            "AUD": lesson_day.get("AUD").strip() if lesson_day.get("LES") else None,
-                                            "NAME_TEACHER": lesson_day.get("NAME").strip() if lesson_day.get(
-                                                "NAME") else None,
-                                            "LESSON": lesson_day.get("SUBJECT").strip() if lesson_day.get(
-                                                "SUBJECT") else None,
-                                            "CAFEDRA": lesson_day.get("CAFEDRA").strip() if lesson_day.get(
-                                                "CAFEDRA") else None,
-                                            "FACULITY": lesson_day.get("FACULITY").strip() if lesson_day.get(
-                                                "FACULITY") else None,
-                                            "DATE": lesson_day.get("DATE")
+                                            "GROUP": lesson_day.get("GROUP").strip()
+                                            if lesson_day.get("GROUP")
+                                            else None,
+                                            "LES": lesson_day.get("LES").strip()
+                                            if lesson_day.get("DAY")
+                                            else None,
+                                            "AUD": lesson_day.get("AUD").strip()
+                                            if lesson_day.get("LES")
+                                            else None,
+                                            "NAME_TEACHER": lesson_day.get(
+                                                "NAME"
+                                            ).strip()
+                                            if lesson_day.get("NAME")
+                                            else None,
+                                            "LESSON": lesson_day.get("SUBJECT").strip()
+                                            if lesson_day.get("SUBJECT")
+                                            else None,
+                                            "CAFEDRA": lesson_day.get("CAFEDRA").strip()
+                                            if lesson_day.get("CAFEDRA")
+                                            else None,
+                                            "FACULITY": lesson_day.get(
+                                                "FACULITY"
+                                            ).strip()
+                                            if lesson_day.get("FACULITY")
+                                            else None,
+                                            "DATE": lesson_day.get("DATE"),
                                         }
                                     )
                 return lessons_for_group
         return None
 
-    def get_teachers(self): pass
+    def get_teachers(self):
+        pass
 
     def get_groups(self) -> Union[None, dict]:
         req = self.session.post(
@@ -69,8 +76,8 @@ class IubipParser(Parser):
             data={"do": "groups"},
             headers={
                 "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:129.0) Gecko/20100101 Firefox/129.0",
-                "Origin": "https://www.iubip.ru"
-            }
+                "Origin": "https://www.iubip.ru",
+            },
         )
 
         if req.status_code == 200:

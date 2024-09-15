@@ -1,12 +1,10 @@
 from sqladmin import ModelView
-from sqladmin.fields import SelectField
 
 # Models
 from src.database.models.user_model import UserTable
-from src.database.models.note_model import NoteTable
+
 
 class UserAdmin(ModelView, model=UserTable):
-
     # Permissions
     can_create: bool = True
     can_edit: bool = True
@@ -25,7 +23,7 @@ class UserAdmin(ModelView, model=UserTable):
         UserTable.id: "Идентификатор",
         UserTable.username: "Имя пользователя",
         UserTable.tg_id: "Телеграмм идентификатор",
-        UserTable.notes: "Заметки"
+        UserTable.notes: "Заметки",
     }
 
     # Relation

@@ -10,5 +10,5 @@ class RgupsException(DolphineException):
     async def excp_not_found_type_educations(self):
         raise HTTPException(
             status_code=status.HTTP_200_OK,
-            detail="Не удалось найти учебные направления для {}" % self.name_st
+            detail="Не удалось найти учебные направления для {}" % self.name_st,
         )

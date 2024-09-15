@@ -1,15 +1,18 @@
 from fastapi import APIRouter, status
-from src.api.services.rgups_service import RgupsService, RGUPSGroupList, RGUPSLessonsList, RGUPSTypeEducationList
-from typing import Type, Final
+from src.api.services.rgups_service import (
+    RgupsService,
+    RGUPSGroupList,
+    RGUPSLessonsList,
+    RGUPSTypeEducationList,
+)
+from typing import Final
 
 
 RGUPS_SERVICE: Final[RgupsService] = RgupsService()
 
 
-rgups_router: APIRouter = APIRouter(
-    prefix="/rgups",
-    tags=["RGUPS"]
-)
+rgups_router: APIRouter = APIRouter(prefix="/rgups", tags=["RGUPS"])
+
 
 @rgups_router.get(
     path="/get_groups",
@@ -18,7 +21,7 @@ rgups_router: APIRouter = APIRouter(
     """,
     summary="Список учебных групп",
     response_model=RGUPSGroupList,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
 )
 async def get_groups() -> RGUPSGroupList:
     return await RGUPS_SERVICE.get_groups()
@@ -29,14 +32,14 @@ async def get_groups() -> RGUPSGroupList:
     description="""Получение расписания пар""",
     summary="Расписание пар РГУПС",
     response_model=RGUPSLessonsList,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
 )
 async def get_lessons(
-    type_faculity: str,
-    name_group: str,
-    course: str
+    type_faculity: str, name_group: str, course: str
 ) -> RGUPSLessonsList:
-    return await RGUPS_SERVICE.get_lessons(type_faculity=type_faculity, course=course, name_group=name_group)
+    return await RGUPS_SERVICE.get_lessons(
+        type_faculity=type_faculity, course=course, name_group=name_group
+    )
 
 
 @rgups_router.get(
@@ -44,7 +47,7 @@ async def get_lessons(
     description="""Получение направлений""",
     summary="Учебные направления РГУПС",
     response_model=RGUPSTypeEducationList,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
 )
 async def get_type_educations() -> RGUPSTypeEducationList:
     return await RGUPS_SERVICE.get_type_educations()

@@ -3,25 +3,27 @@ from src.database.repository.note_repository import NoteRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.database.worker import DBWorker
 from typing import Type
-from abc import ABC, abstractclassmethod
+from abc import abstractclassmethod
+
 
 class IEngineRepository:
-
     user_rep: Type[UserRepository]
     note_rep: Type[NoteRepository]
 
     @abstractclassmethod
-    def __init__(self): pass
+    def __init__(self):
+        pass
 
     @abstractclassmethod
-    async def __aenter__(self):pass
+    async def __aenter__(self):
+        pass
 
     @abstractclassmethod
-    async def __aexit__(self, *args): pass
+    async def __aexit__(self, *args):
+        pass
 
 
 class EngineRepository(IEngineRepository):
-    
     def __init__(self) -> None:
         self.session: AsyncSession
 

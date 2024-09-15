@@ -1,11 +1,13 @@
 from src.dolphine.parse_rgups.parser_rgups import RgupsParser
-from src.api.dto.rgups_dto import (RGUPSGroupList, RGUPSLessonsList, RGUPSTypeEducationList)
+from src.api.dto.rgups_dto import (
+    RGUPSGroupList,
+    RGUPSLessonsList,
+    RGUPSTypeEducationList,
+)
 from src.api.exceptions.rgups_excp import RgupsException
-from typing import Type
 
 
 class RgupsService:
-
     __rgups_parser: RgupsParser = RgupsParser()
 
     @classmethod
@@ -16,11 +18,11 @@ class RgupsService:
         await RgupsException.excp_not_found_groups()
 
     @classmethod
-    async def get_lessons(cls, name_group: str, type_faculity: str, course: str) -> RGUPSLessonsList:
+    async def get_lessons(
+        cls, name_group: str, type_faculity: str, course: str
+    ) -> RGUPSLessonsList:
         data = cls.__rgups_parser.get_lessons(
-            name_facl=type_faculity,
-            course_name=course,
-            name_group=name_group
+            name_facl=type_faculity, course_name=course, name_group=name_group
         )
 
         if data:
